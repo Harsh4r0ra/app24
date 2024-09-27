@@ -1,5 +1,5 @@
 import java.sql.*;
-
+import java.util.Scanner;
 public class SQLiteDatabaseOperations {
 
     // SQLite Database URL (will create 'test.db' in the current directory)
@@ -17,7 +17,6 @@ public class SQLiteDatabaseOperations {
         return conn;
     }
 
-    // Creates the 'student' table with columns: name and roll_no
     public static void createTable() {
         String createStudentTable = """
                 CREATE TABLE IF NOT EXISTS student (
@@ -35,7 +34,6 @@ public class SQLiteDatabaseOperations {
         }
     }
 
-    // Inserts a new record into the 'student' table using PreparedStatement
     public static void insertStudent(int rollNo, String name) {
         String sql = "INSERT INTO student(roll_no, name) VALUES(?, ?)";
 
@@ -103,8 +101,7 @@ public class SQLiteDatabaseOperations {
     public static void main(String[] args) {
         // 1. Create the 'student' table
         createTable();
-
-        // 2. Insert sample student records
+        // 2. Insert sample student records    
         insertStudent(1, "Alice");
         insertStudent(2, "Bob");
         insertStudent(3, "Charlie");
@@ -113,10 +110,17 @@ public class SQLiteDatabaseOperations {
         selectAllStudents();
 
         // 4. Update a student's name (e.g., change Bob to "Robert")
-        updateStudent(2, "Robert");
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter the roll number of the student you want to update: ");
+        int rollNo = sc.nextInt();
+        System.out.println("Enter the new name: ");
+        String newName = sc.next();
+        updateStudent(rollNo, newName);
 
-        // 5. Delete a student record (e.g., delete student with roll no 3)
-        deleteStudent(3);
+        // 5. Delete a student record 
+        System.out.println("Enter the roll number of the student you want to delete: ");
+        int rollNoToDelete = sc.nextInt();
+        deleteStudent(rollNoToDelete);
 
         // 6. Retrieve and display all student records again to see changes
         selectAllStudents();
